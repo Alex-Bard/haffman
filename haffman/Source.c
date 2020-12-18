@@ -1,22 +1,24 @@
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
+
+#include "Header.h";
 
 const unsigned int MAX_LENGTH = 1 * 1024 * 1024;  
 const unsigned int CHUNK_SIZE = 128;             
 
-struct Table{
+/*struct Table{
     char byteFromFile;
     int freq;
-};
+};*/
 
-struct Table* analysFileByts(FILE* F) {
-    struct Table* table;
-    char* buf;
-    while (fread(buf, sizeof(char), 1, F) == 1) {
+struct Table* analysFileByts(FILE* F, unsigned long* n) {
+    struct Table* table = NULL;
+    char buf;
+    int counter = 0;
+    while (fread(&buf, sizeof(char), 1, F) == 1) {
         analysByte(buf, &table);
+        counter++;
     }
     if (feof(F)) {
+        *n = counter;
         return table;
     }
     else printf("File read error.");
@@ -41,7 +43,7 @@ void analysByte(char inputByte, struct Table** table) {
     }
     if (len > MAX_LENGTH) {
         free(box);
-        err(EXIT_FAILURE, "Слишком много входных данных!\n");
+        //err(EXIT_FAILURE, "Слишком много входных данных!\n");
     }
     if (endTable >= len) {
         len += 128;
