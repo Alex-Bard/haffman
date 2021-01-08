@@ -3,7 +3,7 @@
 int main() {
     FILE* file;
     unsigned long n;
-    file = fopen("f.txt", "r");
+    file = fopen("f.txt", "rb");
     if (file == NULL) {
         printf("hhhhh");
     }
